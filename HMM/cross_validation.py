@@ -71,3 +71,5 @@ if __name__ == '__main__':
     # final_results = run_kfold(sentences, tags, k=k, model=HMM_vector)
     # end = time.time()
     # print(f"Time taken for {k}-fold cross-validation : ", end-start)
+    # with open('HMM_vector_results.pkl', 'wb') as f:
+    #     pickle.dump(final_results, f)
