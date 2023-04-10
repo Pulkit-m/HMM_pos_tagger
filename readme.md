@@ -15,20 +15,15 @@ Install dependencies from the terminal
 ```terminal
 pip install -r requirements.txt
 ```
-To get the cross-validation results, run the **cross_validation.py** file in the terminal of your system by using: 
+- Run the **Results.ipynb** notebook.
+- The notebook will automatically download the **NLTK Brown Corpus** and train the models. 
 
-```terminal
-cd HMM
-```
-followed by either
-```terminal
-python cross_validation.py
-```
-or
-```
-python3 cross_validation.py
-```
-Two files named **HMM_symbolic_results.pkl** and **HMM_vector_results.pkl** should now be present in the **HMM**
-directory.
+    *( 1. Make sure that you have an active internet connection.
+    2. The training process may take a few minutes.)*
 
-Run the **Results.ipynb** notebook to see the accuracy as well as the heatmap of the confusion matrix for the each of the algorithms.
+- Two files named **HMM_symbolic_results.pkl** and **HMM_vector_results.pkl** should now be present in the **HMM** directory. 
+- Fter executing the notebook, you will be able to see:
+    * The overall **Accuracy** of both the models
+    * The **Accuracy** of both the models for each **POS Tag** in the corpus
+    * The **Precision**, **Recall** and **F1-score** of both the models for each **POS Tag** in the corpus
+    * The **Confusion Matrix** for both the models 
