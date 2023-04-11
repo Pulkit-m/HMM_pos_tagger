@@ -56,20 +56,20 @@ if __name__ == '__main__':
     #separate the sentences and tags
     sentences, tags = separate_sentence_from_tags(tagged_sentences)
     k = 5
-    print(f"Running {k}-fold cross-validation for HMM_symbolic ...")
-    start = time.time()
-    final_results = run_kfold(sentences, tags, k=k, model=HMM_symbolic)
-    end = time.time()
-    print(f"Time taken for {k}-fold cross-validation : ", end-start)
-    # Save the final_results dictionary to a file
-    with open('HMM_symbolic_results.pkl', 'wb') as f:
-        pickle.dump(final_results, f)
-    
-    #run the below code after HMM_vector has been implemented
-    # print(f"Running {k}-fold cross-validation for HMM vector...")
+    # print(f"Running {k}-fold cross-validation for HMM_symbolic ...")
     # start = time.time()
-    # final_results = run_kfold(sentences, tags, k=k, model=HMM_vector)
+    # final_results = run_kfold(sentences, tags, k=k, model=HMM_symbolic)
     # end = time.time()
     # print(f"Time taken for {k}-fold cross-validation : ", end-start)
-    # with open('HMM_vector_results.pkl', 'wb') as f:
+    # # Save the final_results dictionary to a file
+    # with open('HMM_symbolic_results.pkl', 'wb') as f:
     #     pickle.dump(final_results, f)
+    
+    # run the below code after HMM_vector has been implemented
+    print(f"Running {k}-fold cross-validation for HMM vector...")
+    start = time.time()
+    final_results = run_kfold(sentences, tags, k=k, model=HMM_vector)
+    end = time.time()
+    print(f"Time taken for {k}-fold cross-validation : ", end-start)
+    with open('HMM_vector_results.pkl', 'wb') as f:
+        pickle.dump(final_results, f)
