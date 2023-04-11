@@ -5,6 +5,7 @@ from sklearn.model_selection import KFold
 import nltk
 import pickle
 import time
+import os
 
 def run_fold(fold_idx, sentences, tags, indices,results_dict, model=HMM_symbolic):
     train_indices, test_indices = indices[fold_idx]
@@ -56,6 +57,9 @@ if __name__ == '__main__':
     #separate the sentences and tags
     sentences, tags = separate_sentence_from_tags(tagged_sentences)
     k = 5
+    #check if current directory is HMM otherwise change directory to HMM
+    if os.getcwd().split('\\')[-1] != 'HMM':
+        os.chdir('HMM')
     print(f"Running {k}-fold cross-validation for HMM_symbolic ...")
     start = time.time()
     final_results = run_kfold(sentences, tags, k=k, model=HMM_symbolic)
@@ -65,11 +69,11 @@ if __name__ == '__main__':
     with open('HMM_symbolic_results.pkl', 'wb') as f:
         pickle.dump(final_results, f)
     
-    #run the below code after HMM_vector has been implemented
-    # print(f"Running {k}-fold cross-validation for HMM vector...")
-    # start = time.time()
-    # final_results = run_kfold(sentences, tags, k=k, model=HMM_vector)
-    # end = time.time()
-    # print(f"Time taken for {k}-fold cross-validation : ", end-start)
-    # with open('HMM_vector_results.pkl', 'wb') as f:
-    #     pickle.dump(final_results, f)
+    # run the below code after HMM_vector has been implemented
+    print(f"Running {k}-fold cross-validation for HMM vector...")
+    start = time.time()
+    final_results = run_kfold(sentences, tags, k=k, model=HMM_vector)
+    end = time.time()
+    print(f"Time taken for {k}-fold cross-validation : ", end-start)
+    with open('HMM_vector_results.pkl', 'wb') as f:
+        pickle.dump(final_results, f)
