@@ -3,8 +3,6 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from gensim.models import Word2Vec
 from train_embeddings import train_embeddings
-import nltk
-from nltk.stem import PorterStemmer
 from sklearn.model_selection import train_test_split
 import os
 
@@ -127,15 +125,10 @@ class HMM_vector():
         else:
             #find the most similar word in the vocabulary using word2vec
             word_list = list(self.vocab)
-            #check if word is present in word2vec model
-            if word not in self.word2vec_model.wv.index_to_key:
-                #find the most similar word in the word2vec model
-                most_similar_word = self.word2vec_model.wv.most_similar(word)[0][0]
-                #using this word, find most similar word in the vocabulary
-                #function most_similar_to_given uses cosine similarity to find the most similar word
-                most_similar_word = self.word2vec_model.wv.most_similar_to_given(most_similar_word, word_list)
-            else:
-                most_similar_word = self.word2vec_model.wv.most_similar_to_given(word, word_list)                
+            try:
+                most_similar_word = self.word2vec_model.wv.most_similar_to_given(word, word_list)
+            except:
+                return np.max(self.emission_matrix[self.tag2idx[tag],:])         
             return self.emission_matrix[self.tag2idx[tag]][self.vocab2idx[most_similar_word]]
 
     def Viterbi(self, sentence):
@@ -202,22 +195,3 @@ def separate_sentence_from_tags(sentences_tagged):
             sentences.append(new_sentence)
             tags.append(new_tags)
         return sentences, tags
-
-if __name__ == '__main__':
-    #using the nltk brown corpus and the universal tagset
-    print("Loading the Corpus...")
-    tagged_sentences = nltk.corpus.brown.tagged_sents(tagset='universal')
-    
-    #separate the sentences and tags
-    sentences, tags = separate_sentence_from_tags(tagged_sentences)
-    #split the data into train and test
-    train_sentences, test_sentences, train_tags, test_tags = train_test_split(sentences, tags, test_size=0.2, random_state=42)
-    #create the HMM
-    print("Creating the HMM...")
-    hmm = HMM_vector()
-    #train the HMM
-    print("Fitting the HMM...")
-    hmm.fit(train_sentences, train_tags)
-    #evaluate the HMM
-    print("Evaluating the HMM...")
-    results = hmm.evaluate(test_sentences, test_tags)
